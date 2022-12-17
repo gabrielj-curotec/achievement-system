@@ -1,0 +1,39 @@
+version: "3.7"
+
+networks:
+    backend:
+        driver: ${NETWORKS_DRIVER}
+
+services:
+    mysql:
+        container_name: ips_mysql
+        build:
+            context: ./mysql
+        environment:
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - TZ=${WORKSPACE_TIMEZONE}
+        volumes:
+            - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
+            - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+        ports:
+            - "${MYSQL_PORT}:3306"
+        networks:
+            - backend
+
+    app:
+        build: ./php
+        container_name: ips_app
+        volumes:
+            - ../:/var/www/app
+        ports:
+            - "8080:8080"
+        environment:
+            - XDEBUG_ENABLED=true
+            - XDEBUG_MODE=coverage
+        networks:
+            - backend
+        links:
+            - mysql

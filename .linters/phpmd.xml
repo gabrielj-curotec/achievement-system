@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="PHPMD ruleset">
+    <description>The PHP Mess Detector ruleset</description>
+
+    <rule ref="rulesets/cleancode.xml">
+        <exclude name="StaticAccess"/>
+        <exclude name="BooleanArgumentFlag"/>
+    </rule>
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="ExcessiveParameterList"/>
+        <exclude name="TooManyMethods"/>
+        <exclude name="TooManyPublicMethods"/>
+        <exclude name="ExcessiveClassComplexity"/>
+        <exclude name="TooManyFields"/>
+        <!-- We're already checking this in PHPCS -->
+        <exclude name="CyclomaticComplexity"/>
+    </rule>
+    <rule ref="rulesets/codesize.xml/ExcessiveParameterList">
+        <properties>
+            <property name="minimum" value="6"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyFields">
+        <properties>
+            <property name="maxfields" value="20"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyMethods">
+        <properties>
+            <property name="maxmethods" value="30"/>
+            <property name="ignorepattern" value="(^(set|get|test))i"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
+        <properties>
+            <property name="maxmethods" value="30"/>
+            <property name="ignorepattern" value="(^(set|get|test))i"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
+        <properties>
+            <property name="maximum" value="66"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/controversial.xml"/>
+    <rule ref="rulesets/design.xml">
+        <exclude name="CouplingBetweenObjects"/>
+        <exclude name="CountInLoopExpression"/>
+    </rule>
+
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+            <property name="maximum" value="30"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortVariable"/>
+        <exclude name="LongVariable"/>
+        <exclude name="BooleanGetMethodName"/>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <priority>3</priority>
+        <properties>
+            <property name="minimum" value="3"/>
+            <property name="exceptions" value="id,q,w,i,j,v,e,f,fp,ip"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <priority>3</priority>
+        <properties>
+            <property name="maximum" value="30"/>
+            <property name="subtract-suffixes" value="Wrapper"/>
+        </properties>
+    </rule>
+    <rule ref="rulesets/unusedcode.xml">
+        <!-- PHPMD cannot recognize parameters that are enforced by an interface -->
+        <exclude name="UnusedFormalParameter"/>
+    </rule>
+
+    <exclude-pattern>bootstrap/cache/*</exclude-pattern>
+    <exclude-pattern>bootstrap/autoload.php</exclude-pattern>
+    <exclude-pattern>*/migrations/*</exclude-pattern>
+    <exclude-pattern>*.blade.php</exclude-pattern>
+    <exclude-pattern>*/.phpstorm.meta.php</exclude-pattern>
+    <exclude-pattern>*/_ide_helper.php</exclude-pattern>
+    <exclude-pattern>*/_ide_helper_models.php</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+</ruleset>
